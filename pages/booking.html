@@ -1,1 +1,63 @@
 <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"  content="width=device-width, initial-scale=1">
+        <title> Hawaleek | Book a Service </title>
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+
+    <body>
+        <header> 
+            <nav class="navbar">
+                <div class="logo"> Hawaleek </div>
+                <ul> 
+                    <li> <a href="../index.html"> Home </a></li>
+                    <li> <a href="transport.html"> Transport </a></li>
+                    <li> <a href="booking.html"  class="active" > Booking </a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="booking-container">
+            <section class="form-wrapper">
+                <h1> Schedule an Appointment </h1>
+                <p> Connect with local experts and businesses instantly.</p>
+                
+                <form id="appointmentForm">
+                    <fieldset> 
+                        <legend> Service Details </legend>
+                        <label for="vendor"> Select Business: </label>
+                        <select id="vendor" required>
+                            <option value="" >-- Choose a Place --</option>
+                            <option value="pizzeria"> Neighborhood Pizzeria </option>
+                            <option value="elecrician"> Sayed Electric </option>
+                        </select>
+
+        
+                <label for="serviceType"> Type of Service: </label>
+                <input type="text" id="serviceType"  placeholder="e.g Table for 4, or AC Repair">
+                </fieldset>
+
+            <fieldset> 
+                <legend> Your Information </legend>
+                <label for="fullName"> Full Name: </label>
+                <input type="text" id="fullName" required> 
+
+                <label for="phone"> Phone Number: </label>
+                <input type="tel" id="phone"  placeholder="01xxxxxxxxx" required>
+
+                <label for="date"> Preffered Date: </label>
+                <input type="date" id="date" required> 
+            </fieldset>
+
+            <button type="submit"  class="submit-btn"> Submit Booking Request </button>
+            </form>
+            </section>
+            </main>
+
+        <footer> 
+            <p> &copy; 2026 Hawaleek Project </p>
+        </footer>
+ </body>
+</html>
