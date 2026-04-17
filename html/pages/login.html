@@ -1,1 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawlek | Secure Admin Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
+<div class="login-container">
+    <header>
+        <h2>Hawlek Secure Portal</h2>
+        <p>Please enter your administrative credentials.</p>
+    </header>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="e.g., admin1" required autocomplete="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your secure password" required autocomplete="current-password">
+        </div>
+        
+        <p id="error-msg" class="error-message" style="display: none; color: red; font-weight: bold;"></p>
+        
+        <button type="submit" class="btn-login">Secure Login</button>
+    </form>
+</div>
+
+<script src="js/javadashboard.js"></script>
+</body>
+</html>
