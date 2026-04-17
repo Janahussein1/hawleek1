@@ -1,37 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-
+    // ==========================================
+    // 1. LOGIN PAGE LOGIC
+    // ==========================================
     const loginForm = document.getElementById('loginForm');
     
-
+    // Only run this if we are actually on the login page
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); 
+            e.preventDefault(); // Stop the page from reloading
             
-            const usernameInput = document.getElementById('username').value;
-            const passwordInput = document.getElementById('password').value;
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
             const errorMsg = document.getElementById('error-msg');
             
-            
-            if (usernameInput === "admin1" && passwordInput === "adminpass12") {
-                
+            // Exact check
+            if (user === "admin1" && pass === "adminpass12") {
+                // REDIRECT TO DASHBOARD
                 window.location.href = 'dashboard.html'; 
             } else {
-                
                 errorMsg.textContent = "Error: Invalid username or password.";
                 errorMsg.style.display = 'block';
             }
         });
     }
 
-
+    // ==========================================
+    // 2. DASHBOARD PAGE LOGIC
+    // ==========================================
     const tableBody = document.getElementById('reservation-table-body');
     
+    // Only run this if we are actually on the dashboard page
     if (tableBody) {
-        const statTotalEl = document.getElementById('stat-total');
-        const statPendingEl = document.getElementById('stat-pending');
-        const statCancelledEl = document.getElementById('stat-cancelled');
+        const statTotal = document.getElementById('stat-total');
+        const statPending = document.getElementById('stat-pending');
+        const statCancelled = document.getElementById('stat-cancelled');
 
+        // Function to update the numbers at the top
         const updateStats = () => {
             const rows = document.querySelectorAll('.reservation-row');
             let totalCount = rows.length;
@@ -44,11 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (status === 'cancelled') cancelledCount++;
             });
 
-            if (statTotalEl) statTotalEl.innerText = totalCount;
-            if (statPendingEl) statPendingEl.innerText = pendingCount;
-            if (statCancelledEl) statCancelledEl.innerText = cancelledCount;
+            if (statTotal) statTotal.innerText = totalCount;
+            if (statPending) statPending.innerText = pendingCount;
+            if (statCancelled) statCancelled.innerText = cancelledCount;
         };
 
+        // Function to show pop-up
         const showNotification = (title, message) => {
             const modal = document.getElementById('notificationModal');
             if(modal) {
@@ -60,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        // Add new reservation
         const addForm = document.getElementById('addReservationForm');
         if (addForm) {
             addForm.addEventListener('submit', function(e) {
@@ -67,9 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const name = document.getElementById('resName').value;
                 const guests = document.getElementById('resGuests').value;
-                const dateTimeInput = document.getElementById('resDateTime').value;
+                const dateTime = document.getElementById('resDateTime').value;
 
-                const dateObj = new Date(dateTimeInput);
+                // Format the date nicely
+                const dateObj = new Date(dateTime);
                 const options = { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
                 const formattedDate = dateObj.toLocaleDateString('en-US', options);
 
@@ -80,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 newRow.innerHTML = `
                     <td class="customer-name">${name}</td>
                     <td>${guests} Persons</td>
-                    <td><time datetime="${dateTimeInput}">${formattedDate}</time></td>
+                    <td><time datetime="${dateTime}">${formattedDate}</time></td>
                     <td><span class="badge pending">Pending</span></td>
                     <td>
                         <button class="btn-confirm">Confirm</button>
@@ -95,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Handle Confirm and Cancel Buttons
         tableBody.addEventListener('click', (e) => {
             const target = e.target;
             const row = target.closest('tr');
@@ -127,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Handle Search Bar
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
@@ -134,12 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const rows = document.querySelectorAll('.reservation-row');
                 rows.forEach(row => {
                     const name = row.querySelector('.customer-name').textContent.toLowerCase();
-                    row.style.display = name.includes(searchTerm) ? '' : 'none';
+                    if (name.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
                 });
             });
         }
         
-        
+        // Run stats check immediately on load
         updateStats();
     }
 });
