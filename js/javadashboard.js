@@ -3,18 +3,20 @@ const tableBody = document.getElementById("reservation-table-body");
 
 let reservations = JSON.parse(localStorage.getItem("reservations")) || [];
 
-
+// Load data when page opens
 window.onload = function () {
     renderReservations();
 };
 
-
+// Add reservation
 form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const name = document.getElementById("resName").value;
+    const name = document.getElementById("resName").value.trim();
     const guests = document.getElementById("resGuests").value;
     const datetime = document.getElementById("resDateTime").value;
+
+    if (!name || !guests || !datetime) return;
 
     const newReservation = {
         name,
@@ -24,22 +26,25 @@ form.addEventListener("submit", function (e) {
     };
 
     reservations.push(newReservation);
-    localStorage.setItem("reservations", JSON.stringify(reservations));
-
-    renderReservations();
+    saveAndRender();
     form.reset();
 });
 
-// Render reservations in table
+// Save + render
+function saveAndRender() {
+    localStorage.setItem("reservations", JSON.stringify(reservations));
+    renderReservations();
+}
+
+// Render ALL reservations
 function renderReservations() {
     tableBody.innerHTML = "";
 
-    let total = 0;
+    let total = reservations.length;
     let pending = 0;
     let cancelled = 0;
 
     reservations.forEach((res, index) => {
-        total++;
         if (res.status === "pending") pending++;
         if (res.status === "cancelled") cancelled++;
 
@@ -59,6 +64,7 @@ function renderReservations() {
         tableBody.appendChild(row);
     });
 
+    
     document.getElementById("stat-total").textContent = total;
     document.getElementById("stat-pending").textContent = pending;
     document.getElementById("stat-cancelled").textContent = cancelled;
@@ -67,12 +73,11 @@ function renderReservations() {
 
 function confirmReservation(index) {
     reservations[index].status = "confirmed";
-    localStorage.setItem("reservations", JSON.stringify(reservations));
-    renderReservations();
+    saveAndRender();
 }
+
 
 function cancelReservation(index) {
     reservations[index].status = "cancelled";
-    localStorage.setItem("reservations", JSON.stringify(reservations));
-    renderReservations();
+    saveAndRender();
 }
