@@ -14,40 +14,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const passwordInput = document.getElementById('password').value;
             const errorMsg = document.getElementById('error-msg');
             
-            
-            const userRegex = /^[a-zA-Z0-9]{4,}$/; 
-            const passRegex = /^(?=.*[A-Za-z])(?=.*\d).{9,}$/; 
+         
+            const validUsername = "admin1";
+            const validPassword = "adminpass12";
 
-            if (!userRegex.test(usernameInput)) {
-                errorMsg.textContent = "Error: Username must be at least 4 letters/numbers.";
+            if (usernameInput !== validUsername || passwordInput !== validPassword) {
+               
+                errorMsg.textContent = "Error: Invalid username or password. Access denied.";
                 errorMsg.hidden = false;
-                return;
+                return; 
             }
 
-            if (!passRegex.test(passwordInput)) {
-                errorMsg.textContent = "Error: Password must be > 8 characters with at least 1 letter and 1 number.";
-                errorMsg.hidden = false;
-                return;
-            }
-
-           
             errorMsg.hidden = true; 
-            loginSection.hidden = true;
+            loginSection.hidden = true; 
             dashboardSection.hidden = false; 
-            
-
+           
             updateStats();
         });
     }
+
 
     const tableBody = document.getElementById('reservation-table-body');
     const statTotalEl = document.getElementById('stat-total');
     const statPendingEl = document.getElementById('stat-pending');
     const statCancelledEl = document.getElementById('stat-cancelled');
 
-
+   
     const updateStats = () => {
-        if (!tableBody) return;
+        if (!tableBody) return; // safety check
         
         const rows = document.querySelectorAll('.reservation-row');
         let totalCount = rows.length;
@@ -64,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (statPendingEl) statPendingEl.innerText = pendingCount;
         if (statCancelledEl) statCancelledEl.innerText = cancelledCount;
     };
+
 
     const showNotification = (title, message) => {
         const modal = document.getElementById('notificationModal');
@@ -83,12 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const guests = document.getElementById('resGuests').value;
             const dateTimeInput = document.getElementById('resDateTime').value;
 
-            
+            // Format Date and Time
             const dateObj = new Date(dateTimeInput);
             const options = { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
             const formattedDate = dateObj.toLocaleDateString('en-US', options);
 
-            
+         
             const newRow = document.createElement('tr');
             newRow.className = 'reservation-row';
             newRow.setAttribute('data-status', 'pending');
@@ -106,13 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tableBody.appendChild(newRow);
             
-        
+           
             this.reset();
             updateStats();
             showNotification("Success", `Reservation for ${name} added!`);
         });
     }
 
+ 
     if (tableBody) {
         tableBody.addEventListener('click', (e) => {
             const target = e.target;
@@ -126,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!badge) return;
 
-           
+     
             if (target.classList.contains('btn-confirm') && !target.disabled) {
                 row.setAttribute('data-status', 'confirmed');
                 badge.className = 'badge confirmed';
@@ -137,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showNotification("Confirmed", `Reservation for ${customerName} has been confirmed.`);
             }
 
-            // CANCEL BUTTON CLICKED
+
             if (target.classList.contains('btn-cancel') && !target.disabled) {
                 row.setAttribute('data-status', 'cancelled');
                 badge.className = 'badge cancelled';
@@ -146,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(confirmBtn) confirmBtn.disabled = true; 
                 target.disabled = true; 
                 
-             
+
                 row.classList.add('faded');
 
                 updateStats();
@@ -155,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
@@ -163,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             rows.forEach(row => {
                 const name = row.querySelector('.customer-name').textContent.toLowerCase();
-         
+             
                 row.hidden = !name.includes(searchTerm);
             });
         });
