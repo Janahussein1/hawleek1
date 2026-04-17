@@ -14,6 +14,8 @@
         <nav>
             <ul> 
                 <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="pages/clinics.html">Clinics</a></li>
+                <li><a href="pages/transport.html">Transport</a></li>
                 <li><a href="index.html">Logout</a></li>
             </ul>
         </nav>
@@ -28,11 +30,11 @@
         <section class="stats-container">
             <article class="card">
                 <h3>Total Bookings</h3>
-                <p class="stat-number" id="stat-total">2</p>
+                <p class="stat-number" id="stat-total">0</p>
             </article>
             <article class="card">
                 <h3>Pending</h3>
-                <p class="stat-number" id="stat-pending">1</p>
+                <p class="stat-number" id="stat-pending">0</p>
             </article>
             <article class="card">
                 <h3>Cancelled</h3>
@@ -45,11 +47,11 @@
             <form id="addReservationForm">
                 <div class="form-group">
                     <label for="resName">Customer Name</label>
-                    <input type="text" id="resName" required>
+                    <input type="text" id="resName" required placeholder="e.g. John Doe">
                 </div>
                 <div class="form-group">
                     <label for="resGuests">Number of Guests</label>
-                    <input type="number" id="resGuests" required min="1">
+                    <input type="number" id="resGuests" required min="1" placeholder="e.g. 2">
                 </div>
                 <div class="form-group">
                     <label for="resDateTime">Date & Time</label>
@@ -61,7 +63,7 @@
 
         <section class="table-wrapper">
             <h2>Recent Reservations</h2>
-            <input type="search" id="searchInput" placeholder="Search by name...">
+            <input type="search" id="searchInput" placeholder="Search by customer name...">
 
             <div class="table-responsive">
                 <table>
@@ -101,12 +103,6 @@
         </section>
     </main>
 </div>
-
-<dialog id="notificationModal">
-    <h3 id="modalTitle">System Update</h3>
-    <p id="modalMessage">Action successful.</p>
-    <form method="dialog"><button>Close</button></form>
-</dialog>
 
 <script src="javadashboard.js"></script>
 </body>
