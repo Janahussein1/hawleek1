@@ -1,79 +1,171 @@
-console.log("JS LOADED");
 document.addEventListener('DOMContentLoaded', () => {
-
     console.log("JS LOADED");
 
-    let pendingCount = parseInt(localStorage.getItem('pendingStats')) || 12;
-    let cancelledCount = parseInt(localStorage.getItem('cancelledStats')) || 4;
 
+    const loginForm = document.getElementById('loginForm');
+    const loginSection = document.getElementById('login-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            
+            const userRegex = /^[a-zA-Z0-9]{4,}$/; 
+            const passRegex = /^(?=.*[A-Za-z])(?=.*\d).{9,}$/; 
+
+            if (!userRegex.test(usernameInput)) {
+                errorMsg.textContent = "Error: Username must be at least 4 letters/numbers.";
+                errorMsg.hidden = false;
+                return;
+            }
+
+            if (!passRegex.test(passwordInput)) {
+                errorMsg.textContent = "Error: Password must be > 8 characters with at least 1 letter and 1 number.";
+                errorMsg.hidden = false;
+                return;
+            }
+
+           
+            errorMsg.hidden = true; 
+            loginSection.hidden = true;
+            dashboardSection.hidden = false; 
+            
+
+            updateStats();
+        });
+    }
+
+    const tableBody = document.getElementById('reservation-table-body');
+    const statTotalEl = document.getElementById('stat-total');
     const statPendingEl = document.getElementById('stat-pending');
     const statCancelledEl = document.getElementById('stat-cancelled');
 
-    if (statPendingEl) statPendingEl.innerText = pendingCount;
-    if (statCancelledEl) statCancelledEl.innerText = cancelledCount;
 
     const updateStats = () => {
+        if (!tableBody) return;
+        
+        const rows = document.querySelectorAll('.reservation-row');
+        let totalCount = rows.length;
+        let pendingCount = 0;
+        let cancelledCount = 0;
+
+        rows.forEach(row => {
+            const status = row.getAttribute('data-status');
+            if (status === 'pending') pendingCount++;
+            if (status === 'cancelled') cancelledCount++;
+        });
+
+        if (statTotalEl) statTotalEl.innerText = totalCount;
         if (statPendingEl) statPendingEl.innerText = pendingCount;
         if (statCancelledEl) statCancelledEl.innerText = cancelledCount;
-
-        localStorage.setItem('pendingStats', pendingCount);
-        localStorage.setItem('cancelledStats', cancelledCount);
     };
 
-    const tableBody = document.getElementById('reservation-table-body');
+    const showNotification = (title, message) => {
+        const modal = document.getElementById('notificationModal');
+        if(modal) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            modal.showModal();
+        }
+    };
 
-    if (!tableBody) {
-        console.error("Table body NOT found");
-        return;
+    const addForm = document.getElementById('addReservationForm');
+    if (addForm) {
+        addForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('resName').value;
+            const guests = document.getElementById('resGuests').value;
+            const dateTimeInput = document.getElementById('resDateTime').value;
+
+            
+            const dateObj = new Date(dateTimeInput);
+            const options = { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+            const formattedDate = dateObj.toLocaleDateString('en-US', options);
+
+            
+            const newRow = document.createElement('tr');
+            newRow.className = 'reservation-row';
+            newRow.setAttribute('data-status', 'pending');
+            
+            newRow.innerHTML = `
+                <td class="customer-name" scope="row">${name}</td>
+                <td>${guests} Persons</td>
+                <td><time datetime="${dateTimeInput}">${formattedDate}</time></td>
+                <td><span class="badge pending">Pending</span></td>
+                <td>
+                    <button class="btn-confirm">Confirm</button>
+                    <button class="btn-cancel">Cancel</button>
+                </td>
+            `;
+
+            tableBody.appendChild(newRow);
+            
+        
+            this.reset();
+            updateStats();
+            showNotification("Success", `Reservation for ${name} added!`);
+        });
     }
 
-    tableBody.addEventListener('click', (e) => {
-        console.log("CLICK DETECTED");
+    if (tableBody) {
+        tableBody.addEventListener('click', (e) => {
+            const target = e.target;
+            const row = target.closest('tr');
+            if (!row) return;
 
-        const target = e.target;
-        const row = target.closest('tr');
-        if (!row) return;
+            const badge = row.querySelector('.badge');
+            const confirmBtn = row.querySelector('.btn-confirm');
+            const cancelBtn = row.querySelector('.btn-cancel');
+            const customerName = row.querySelector('.customer-name').innerText;
 
-        const badge = row.querySelector('.badge');
-        const confirmBtn = row.querySelector('.btn-confirm');
-        const cancelBtn = row.querySelector('.btn-cancel');
+            if (!badge) return;
 
-        if (!badge) return;
+           
+            if (target.classList.contains('btn-confirm') && !target.disabled) {
+                row.setAttribute('data-status', 'confirmed');
+                badge.className = 'badge confirmed';
+                badge.textContent = 'Confirmed';
+                target.disabled = true; 
 
-        // CONFIRM
-        if (target.classList.contains('btn-confirm') && !target.disabled) {
-            console.log("CONFIRM CLICKED");
-
-            if (badge.classList.contains('pending')) {
-                pendingCount--;
+                updateStats();
+                showNotification("Confirmed", `Reservation for ${customerName} has been confirmed.`);
             }
 
-            badge.className = 'badge confirmed';
-            badge.textContent = 'Confirmed';
+            // CANCEL BUTTON CLICKED
+            if (target.classList.contains('btn-cancel') && !target.disabled) {
+                row.setAttribute('data-status', 'cancelled');
+                badge.className = 'badge cancelled';
+                badge.textContent = 'Cancelled';
 
-            target.disabled = true;
-            updateStats();
-        }
+                if(confirmBtn) confirmBtn.disabled = true; 
+                target.disabled = true; 
+                
+             
+                row.classList.add('faded');
 
-        // CANCEL
-        if (target.classList.contains('btn-cancel') && !target.disabled) {
-            console.log("CANCEL CLICKED");
-
-            if (badge.classList.contains('pending')) {
-                pendingCount--;
+                updateStats();
+                showNotification("Cancelled", `Reservation for ${customerName} has been cancelled.`);
             }
+        });
+    }
 
-            cancelledCount++;
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.reservation-row');
 
-            badge.className = 'badge cancelled';
-            badge.textContent = 'Cancelled';
-
-            confirmBtn.disabled = true;
-            cancelBtn.disabled = true;
-            row.style.opacity = '0.5';
-
-            updateStats();
-        }
-    });
-
+            rows.forEach(row => {
+                const name = row.querySelector('.customer-name').textContent.toLowerCase();
+         
+                row.hidden = !name.includes(searchTerm);
+            });
+        });
+    }
 });
