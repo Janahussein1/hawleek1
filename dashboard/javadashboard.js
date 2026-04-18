@@ -29,11 +29,35 @@ document.addEventListener('DOMContentLoaded', () => {
         addForm.addEventListener('submit', function(e) {
             e.preventDefault(); // Stops the page from refreshing
 
-            const name = document.getElementById('resName').value;
-            const guests = document.getElementById('resGuests').value;
-            const dateTime = document.getElementById('resDateTime').value;
+            const nameInput = document.getElementById('resName');
+            const guestsInput = document.getElementById('resGuests');
+            const dateTimeInput = document.getElementById('resDateTime');
 
-            // Create a new row
+            const name = nameInput.value.trim(); 
+            const guests = guestsInput.value.trim(); 
+            const dateTime = dateTimeInput.value;
+
+            // =========================================
+            // 1. REGEX VALIDATION: CUSTOMER NAME
+            // =========================================
+            // Only allows upper/lowercase letters and spaces. Minimum 1 character.
+            const nameRegex = /^[A-Za-z\s]+$/;
+            
+            if (!nameRegex.test(name)) {
+                alert("Error: Invalid Name! Please use ONLY letters. No numbers or special characters allowed.");
+                nameInput.focus(); // Highlights the box so they can fix it
+                return; 
+            }
+
+           
+            const guestsRegex = /^[1-9]\d*$/;
+
+            if (!guestsRegex.test(guests)) {
+                alert("Error: Invalid Guest Count! Please enter a positive number (1 or more).");
+                guestsInput.focus(); // Highlights the box so they can fix it
+                return; 
+            }
+           
             const newRow = document.createElement('tr');
             newRow.className = 'res-row';
             newRow.setAttribute('data-status', 'Pending'); // Default status
@@ -52,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add the row to the table
             tableBody.appendChild(newRow);
             
-            // Clear the form and update the count
+            // Clear the form and update the counts
             this.reset();
             updateStats();
         });
