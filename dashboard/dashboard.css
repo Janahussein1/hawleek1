@@ -11,7 +11,7 @@
 }
 
 body {
-    background-color: #f8f9ff; /* GhostWhite */
+    background-color: whitesmoke; 
     color: #2c3e50;
     line-height: 1.6;
     overflow-x: hidden;
@@ -38,4 +38,39 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+/* 3. Navigation Bar */
+nav {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+}
+
+nav a {
+    text-decoration: none;
+    color:royalblue; 
+    font-weight: bold;
+    margin: 0 20px;
+    transition: 0.3s;
+    font-size: 1.1rem;
+}
+
+nav a:hover {
+    color: orangered; 
+    text-shadow: 0 0 10px rgba(255, 69, 0, 0.2);
+}
+
+/* 4. Headers */
+h1, h2 {
+    color: midnightblue; 
+    margin: 30px 0;
+    text-align: center;
+    animation: slideInUp 0.6s ease-out;
 }
