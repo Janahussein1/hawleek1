@@ -173,3 +173,47 @@ ul li:nth-child(3) { animation-delay: 0.3s; }
     transform: scale(1.02);
     letter-spacing: 1px;
 }
+
+/* 7. Table Styling */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    animation: slideInUp 1.2s ease-out;
+}
+
+thead th {
+    background: royalblue;
+    color: white;
+    padding: 20px;
+    text-align: left;
+    font-size: 1rem;
+}
+
+thead th:first-child { border-radius: 15px 0 0 15px; }
+thead th:last-child { border-radius: 0 15px 15px 0; }
+
+tbody tr {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    transition: 0.3s;
+}
+
+tbody tr:hover {
+    transform: scale(1.01);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+tbody td {
+    padding: 20px;
+    color: #555;
+}
+
+tbody td:first-child { border-radius: 15px 0 0 15px; font-weight: bold; color: #191970; }
+tbody td:last-child { border-radius: 0 15px 15px 0; }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    ul { flex-direction: column; align-items: center; }
+    nav a { margin: 10px; display: inline-block; }
+}
