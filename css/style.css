@@ -336,3 +336,55 @@ footer {
     font-size: 1.4rem;
 }
 
+
+/* Form Styles */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 14px 25px;
+    border-radius: 50px;
+    border: 2px solid WhiteSmoke;
+    background: WhiteSmoke;
+    outline: none;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: RoyalBlue;
+    background: White;
+    box-shadow: 0 0 10px rgba(65, 105, 225, 0.1);
+}
+
+.action-btn {
+    width: 100%;
+    padding: 15px;
+    background: RoyalBlue;
+    color: White;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.action-btn:hover {
+    background: OrangeRed;
+    transform: scale(1.02);
+}
+
+.fare-result {
+    margin-top: 20px;
+    padding: 15px;
+    background: AliceBlue;
+    border-radius: 15px;
+    text-align: center;
+    color: RoyalBlue;
+    font-weight: 500;
+}
+
