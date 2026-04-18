@@ -11,10 +11,18 @@
 }
 
 body {
-    background-color: whitesmoke; 
-    color: #2c3e50;
-    line-height: 1.6;
-    overflow-x: hidden;
+    background: linear-gradient(rgba(248, 249, 255, 0.85), rgba(248, 249, 255, 0.85)), 
+                url('https://images.unsplash.com/photo-1517248135467-4c7ed9d87363?q=80&w=2070'); 
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
 }
 
 /* 2. Keyframes for Animations */
@@ -69,11 +77,26 @@ nav a:hover {
 
 /* 4. Headers */
 h1, h2 {
-    color: midnightblue; 
-    margin: 30px 0;
-    text-align: center;
-    animation: slideInUp 0.6s ease-out;
+    display: table;
+    margin: 40px auto;
+    padding: 15px 45px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #191970;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
 }
+
+h1:hover, h2:hover {
+    background: #191970;
+    color: #ffffff;
+    transform: scale(1.08) translateY(-5px);
+    box-shadow: 0 15px 30px rgba(25, 25, 112, 0.25);
+}
+
 /* 5. status cards*/
 
 ul {
@@ -174,6 +197,13 @@ ul li:nth-child(3) { animation-delay: 0.3s; }
     letter-spacing: 1px;
 }
 
+ul li, #addReservationForm {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
 /* 7. Table Styling */
 table {
     width: 100%;
@@ -212,6 +242,21 @@ tbody td {
 tbody td:first-child { border-radius: 15px 0 0 15px; font-weight: bold; color: #191970; }
 tbody td:last-child { border-radius: 0 15px 15px 0; }
 
+thead th {
+    background: rgba(65, 105, 225, 0.9) !important;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+}
+
+thead th:hover {
+    background: #191970 !important;
+}
+
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+} 
 /* Mobile Responsive */
 @media (max-width: 768px) {
     ul { flex-direction: column; align-items: center; }
