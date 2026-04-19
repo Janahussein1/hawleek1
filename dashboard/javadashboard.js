@@ -1,37 +1,60 @@
 document.addEventListener('DOMContentLoaded', () => {
+// 1. SELECT ELEMENTS
 const tableBody = document.getElementById('reservation-table-body');
 const statTotal = document.getElementById('stat-total');
 const statPending = document.getElementById('stat-pending');
 const statCancelled = document.getElementById('stat-cancelled');
 const addForm = document.getElementById('addReservationForm');
 
-// Load data from LocalStorage
+// 2. DATA INITIALIZATION (Persistence)
 let reservations = JSON.parse(localStorage.getItem('restaurant_data')) || [];
-renderTable();
 
-// TOAST NOTIFICATION FUNCTION
+// 3. TOAST NOTIFICATION FUNCTION
 function showToast(message, type = 'success') {
 const container = document.getElementById('toast-container');
+if (!container) return;
+
 const toast = document.createElement('div');
 toast.className = `toast toast-${type}`;
 toast.innerText = message;
+
 container.appendChild(toast);
 
+// Auto-remove after 3 seconds
 setTimeout(() => {
 toast.style.opacity = '0';
 setTimeout(() => toast.remove(), 500);
 }, 3000);
 }
 
+// 4. CORE FUNCTIONS
+function updateStats() {
+statTotal.innerText = reservations.length;
+statPending.innerText = reservations.filter(r => r.status === 'Pending').length;
+statCancelled.innerText = reservations.filter(r => r.status === 'Cancelled').length;
+}
+
+function saveData() {
+localStorage.setItem('restaurant_data', JSON.stringify(reservations));
+updateStats();
+}
+
 function renderTable() {
 tableBody.innerHTML = '';
+
 reservations.forEach((res, index) => {
 const row = document.createElement('tr');
+row.className = 'res-row';
+row.setAttribute('data-status', res.status);
+
+// Dynamic color for status text
+const statusColor = res.status === 'Confirmed' ? '#27ae60' : (res.status === 'Cancelled' ? '#e74c3c' : '#f39c12');
+
 row.innerHTML = `
 <td>${res.name}</td>
 <td>${res.guests}</td>
 <td>${res.dateTime.replace('T', ' ')}</td>
-<td style="font-weight:bold; color:${res.status === 'Cancelled' ? 'red' : res.status === 'Confirmed' ? 'green' : 'orange'}">${res.status}</td>
+<td style="color: ${statusColor}; font-weight: bold;">${res.status}</td>
 <td>
 <button class="btn-confirm" data-index="${index}">Confirm</button>
 <button class="btn-cancel" data-index="${index}">Cancel</button>
@@ -42,60 +65,67 @@ tableBody.appendChild(row);
 updateStats();
 }
 
-function updateStats() {
-statTotal.innerText = reservations.length;
-statPending.innerText = reservations.filter(r => r.status === 'Pending').length;
-statCancelled.innerText = reservations.filter(r => r.status === 'Cancelled').length;
-}
+// 5. EVENT LISTENERS
 
-if (addForm) {
-addForm.addEventListener('submit', function(e) {
+// Add New Reservation
+addForm.addEventListener('submit', (e) => {
 e.preventDefault();
 
 const name = document.getElementById('resName').value.trim();
 const guests = parseInt(document.getElementById('resGuests').value);
-const dateVal = document.getElementById('resDateTime').value;
-const inputDate = new Date(dateVal);
+const dateStr = document.getElementById('resDateTime').value;
+const inputDate = new Date(dateStr);
 const now = new Date();
 
-// VALIDATION: No Numbers in Name
+// VALIDATION 1: Letters only
 if (!/^[A-Za-z\s]+$/.test(name)) {
 showToast("Error: Name must be letters only!", "error");
 return;
 }
 
-// VALIDATION: No negative guests
+// VALIDATION 2: No negative or zero
 if (guests <= 0) {
-showToast("Error: Guests must be 1 or more!", "error");
+showToast("Error: Guests must be at least 1!", "error");
 return;
 }
 
-// VALIDATION: No past dates
+// VALIDATION 3: No past dates
 if (inputDate < now) {
-showToast("Error: You cannot book in the past!", "error");
+showToast("Error: You cannot book a date in the past!", "error");
 return;
 }
 
-reservations.push({ name, guests, dateTime: dateVal, status: 'Pending' });
-localStorage.setItem('restaurant_data', JSON.stringify(reservations));
-renderTable();
-showToast("Reservation successful!");
-this.reset();
+// Add to array
+reservations.push({
+name: name,
+guests: guests,
+dateTime: dateStr,
+status: 'Pending'
 });
-}
 
+saveData();
+renderTable();
+showToast("Reservation successfully added!");
+addForm.reset();
+});
+
+// Handle Confirm/Cancel (Using Event Delegation)
 tableBody.addEventListener('click', (e) => {
-const index = e.target.getAttribute('data-index');
-if (index === null) return;
+const index = e.target.dataset.index;
+if (index === undefined) return;
 
 if (e.target.classList.contains('btn-confirm')) {
 reservations[index].status = 'Confirmed';
-showToast("Confirmed!");
+showToast("Booking Confirmed!");
 } else if (e.target.classList.contains('btn-cancel')) {
 reservations[index].status = 'Cancelled';
-showToast("Cancelled", "error");
+showToast("Booking Cancelled", "error");
 }
-localStorage.setItem('restaurant_data', JSON.stringify(reservations));
+
+saveData();
 renderTable();
 });
+
+// 6. INITIAL RUN
+renderTable();
 });
