@@ -1,4 +1,6 @@
+/* Cleanly Setup CSS - No Conflict Markers */
 
+/* Navbar */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -14,7 +16,7 @@
 .logo {
     font-size: 26px;
     font-weight: bold;
-    color: #166534; 
+    color: #166534;
 }
 
 .navbar ul {
@@ -31,23 +33,6 @@
     color: DimGray;
     font-weight: 500;
     transition: 0.3s;
-    position: relative;
-}
-
-.navbar ul li a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -5px;
-    left: 0;
-    background-color: #166534; 
-    transition: 0.3s;
-}
-
-.navbar ul li a:hover::after,
-.navbar ul li a.active::after {
-    width: 100%;
 }
 
 .navbar ul li a:hover,
@@ -55,20 +40,16 @@
     color: #166534;
 }
 
+/* Page Header */
 .page-header {
     text-align: center;
     padding: 60px 20px;
-    background: linear-gradient(135deg, #f0fdf4, white); 
-    color: #14532d; 
+    background: linear-gradient(135deg, #f0fdf4, white);
+    color: #14532d;
     border-bottom: 2px solid #dcfce7;
 }
 
-.page-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-
-
+/* Layout & Cards */
 .directory-layout {
     padding: 50px 8%;
 }
@@ -88,26 +69,22 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     transition: 0.4s;
     border: 1px solid #f9fafb;
-    display: flex; 
-    flex-direction: column; 
 }
 
 .card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(22, 101, 52, 0.15); 
+    box-shadow: 0 20px 40px rgba(22, 101, 52, 0.15);
 }
 
 .card img {
     width: 100%;
     height: 180px;
-    object-fit: cover; 
-    object-position: center;
-    display: block; 
+    object-fit: cover;
+    display: block;
 }
 
 .cards-content {
     padding: 25px;
-    flex-grow: 1; 
 }
 
 .cards-content h3 {
@@ -120,18 +97,18 @@
     font-size: 0.9rem;
     color: #555;
     margin-bottom: 15px;
-    height: 40px;
 }
 
+/* Tags & Buttons */
 .status-tag {
     display: inline-block;
     padding: 5px 12px;
-    background: #dcfce7; 
-    color: #166534; 
+    background: #dcfce7;
+    color: #166534;
     border-radius: 50px;
     font-size: 0.75rem;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .book-link, .call-link {
@@ -153,12 +130,11 @@
 
 .book-link:hover {
     background: #14532d;
-    transform: scale(1.02);
 }
 
 .call-link {
     background: white; 
-    color: #d97706; 
+    color: #d97706;
     border: 1px solid #d97706;
 }
 
@@ -167,9 +143,9 @@
     color: White;
 }
 
-
+/* Footer */
 footer {
-    background: #111827; 
+    background: #111827;
     color: WhiteSmoke;
     padding: 50px 10%;
     text-align: center;
@@ -187,9 +163,4 @@ footer {
 .footer-links a {
     color: #9ca3af;
     text-decoration: none;
-    transition: 0.3s;
-}
-
-.footer-links a:hover {
-    color: #d97706; 
 }
