@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             image: "https://images.unsplash.com/photo-1608023136037-3363ad92a953?w=800",
             status: "Open Now",
             actionText: "Directions",
-            contactText: "Call Office"s
+            contactText: "Call Office"
         }
     ];
 
